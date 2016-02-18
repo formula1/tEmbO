@@ -7,7 +7,7 @@ function renderTree(component){
   if (component.render){
     component.instance = component.render();
     component.instance.component = component;
-    return Tembo.renderTree(component.instance);
+    return this.renderTree(component.instance);
   }
   return component;
 }
@@ -15,6 +15,6 @@ function renderTree(component){
 //File : src/Tembo.render.js
 function render(component,element){
   'use strict';
-  component.instance = Tembo.renderTree(component);
-  Tembo.appendChild(element,component.instance);
+  component.instance = this.renderTree(component);
+  this.appendChild(element,component.instance);
 }

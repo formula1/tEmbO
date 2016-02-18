@@ -51,5 +51,5 @@ proto.setState = function(state){
     this.state[key] = state[key];
   }
 
-  Tembo._.deeplyCompare(this.instance,this.__render__());
+  this.deeplyCompare(this.instance,this.__render__());
 };

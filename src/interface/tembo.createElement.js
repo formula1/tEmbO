@@ -8,10 +8,10 @@ function append(element,content){
   if (content)
   if (Array.isArray(content)){
     content.forEach(function(child){
-      Tembo.appendChild(element,child);
+      this.appendChild(element,child);
     });
   }else{
-    Tembo.appendChild(element,content);
+    this.appendChild(element,content);
   }
 
   return element;
@@ -97,6 +97,6 @@ function createElement(element,props,content){
     element.isTemboComponent = true;
   }
 
-  return new Tembo.El(element,props,content);
+  return new this.El(element,props,content);
 
 }

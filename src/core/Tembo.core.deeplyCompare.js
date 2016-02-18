@@ -11,7 +11,7 @@ function upCall(lifecycleMethod,instance){
     if (instance.component.componentWillUnmount){
       instance.component[lifecycleMethod]();
     }else{
-      Tembo._.upCall(lifecycleMethod,instance.component);
+      this.upCall(lifecycleMethod,instance.component);
     }
   }else{
     console.log('if your code reach this line, send-me a e-mail gui_souza@me.com . I would love to work with you in my new project');
@@ -51,11 +51,11 @@ function patchChildren(instance,newInstance){
   for(var key in SilentDiff){
     var patch = SilentDiff[key];
     if (patch.a === undefined && patch.b !== undefined){
-      Tembo._.upCall('componentWillUnmount',patch.b);
+      this.upCall('componentWillUnmount',patch.b);
       instance.appendChild(patch.b);
     }
     if (patch.a !== undefined && patch.b === undefined){
-      Tembo._.upCall('componentWillUnmount',patch.a);
+      this.upCall('componentWillUnmount',patch.a);
       instance.removeChild(patch.a);
     }
   }
@@ -83,9 +83,9 @@ function deeplyCompare(element,reRenderedElement){
   newInstance.instance = newInstance.render();
   newInstance.instance.component = newInstance;
 
-  Tembo._.patchAttributes(instance.instance,newInstance.instance);
-  Tembo._.patchText(instance.instance,newInstance.instance);
-  Tembo._.patchChildren(instance.instance,newInstance.instance);
+  this.patchAttributes(instance.instance,newInstance.instance);
+  this.patchText(instance.instance,newInstance.instance);
+  this.patchChildren(instance.instance,newInstance.instance);
 
   return false;
 

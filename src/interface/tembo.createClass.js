@@ -4,5 +4,5 @@ module.exports.createClass = createClass;
 
 function createClass(structure){
   'use strict';
-  return Tembo._.componentFactory(structure);
+  return this._.componentFactory(structure);
 }
