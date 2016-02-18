@@ -1,46 +1,55 @@
+module.exports.componentFactory = componentFactory;
+
 //File : src/Tembo._.componentFactory.js
 
-(function(Tembo){
+var TemboComponent;
+
+function componentFactory(structure){
   'use strict';
 
-  Tembo._.componentFactory = function(structure){
-    var TemboComponent = function(){};
-    for(var key in structure){
-      var method = structure[key];
-      TemboComponent.prototype[key] = method;
-    }
+  var ret = function(){};
 
+  var proto = ret.prototype = Object.create(TemboComponent.prototype);
 
-    TemboComponent.prototype.__render__ = TemboComponent.prototype.render;
-    TemboComponent.prototype.render = function(){
-      var renderResult = TemboComponent.prototype.__render__.bind(this)();
-      // if (!this.oldInstance){
+  for(var key in structure){
+    if (key in proto) continue;
+    proto[key] = structure[key];
+  }
 
-      // }
-      // this.instance = renderResult;
-      renderResult.component = this;
+  if (structure.displayName)
+    ret.displayName = structure.displayName;
 
-      return renderResult;
-    };
+  return ret;
+}
 
-    TemboComponent.prototype.__componentWillUnmount__ = TemboComponent.prototype.componentWillUnmount || function(){};
-    TemboComponent.prototype.componentWillUnmount = function(){
-      return TemboComponent.prototype.__componentWillUnmount__.bind(this)();
-    };
+TemboComponent = function(){};
 
-    if (structure.displayName)
-      TemboComponent.displayName = structure.displayName;
+var proto = TemboComponent.prototype;
 
-    TemboComponent.prototype.isTemboComponent = true;
-    TemboComponent.prototype.setState = function(state){
-      for(key in state){
-        this.state[key] = state[key];
-      }
+proto.isTemboComponent = true;
 
-      Tembo._.deeplyCompare(this.instance,this.render());
+// to be used internally
+proto.__render__ = function(){
+  var renderResult = this.render();
 
-    };
-    return TemboComponent;
-  };
+  // if (!this.oldInstance){
 
-})(this.Tembo);
+  // }
+  // this.instance = renderResult;
+  renderResult.component = this;
+
+  return renderResult;
+};
+
+// to be used internally
+proto.__componentWillUnmount__ = function(){
+  return this.componentWillUnmount();
+};
+
+proto.setState = function(state){
+  for(var key in state){
+    this.state[key] = state[key];
+  }
+
+  Tembo._.deeplyCompare(this.instance,this.__render__());
+};

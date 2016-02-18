@@ -1,8 +1,8 @@
 // File : src/Tembo.createClass.js
 
-(function(Tembo){
+module.exports.createClass = createClass;
+
+function createClass(structure){
   'use strict';
-  Tembo._.can('createClass',function(structure){
-    return Tembo._.componentFactory(structure);
-  });
-})(this.Tembo);
+  return Tembo._.componentFactory(structure);
+}

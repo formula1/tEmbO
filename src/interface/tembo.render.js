@@ -1,24 +1,20 @@
-(function(Tembo){
+
+module.exports.renderTree = renderTree;
+module.exports.render = render;
+
+function renderTree(component){
   'use strict';
-  Tembo._.can('renderTree',function(component){
-    if (component.render){
-      component.instance = component.render();
-      component.instance.component = component;
-      return Tembo.renderTree(component.instance);
-    }
-    return component;
-  });
-})(this.Tembo);
-
-
+  if (component.render){
+    component.instance = component.render();
+    component.instance.component = component;
+    return Tembo.renderTree(component.instance);
+  }
+  return component;
+}
 
 //File : src/Tembo.render.js
-
-(function(Tembo){
+function render(component,element){
   'use strict';
-  Tembo._.can('render',function(component,element){
-    component.instance = Tembo.renderTree(component);
-    Tembo.appendChild(element,component.instance);
-
-  });
-})(this.Tembo);
+  component.instance = Tembo.renderTree(component);
+  Tembo.appendChild(element,component.instance);
+}
